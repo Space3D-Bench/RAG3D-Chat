@@ -38,7 +38,7 @@ class ImagePlugin:
 
         Args:
             vision_llm (BaseLLM): LLM model answering the queries based on the attached image
-            llm_chat (LlmChat): LLM chat used for filter definition
+            llm_chat (AbstractLlmChat): LLM chat used for filter definition
             embed_model (MultiModalEmbedding): multimodal embedding model
             image_dir (optional, Path): path to a directory in which the image data is stored
             persist_dir (Path): path to a directory in which the storage context
