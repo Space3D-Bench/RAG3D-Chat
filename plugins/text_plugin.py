@@ -77,7 +77,7 @@ class TextPlugin:
         query_engine = self._get_query_engine(query)
         result = query_engine.query(query)
         logger.info(f"Answer: {result}")
-        return result
+        return result.response
 
     def _get_index(
         self, persist_dir: Path, text_dir: Optional[Path] = None
