@@ -57,7 +57,7 @@ class PluginsFactory:
         Returns:
             ImagePlugin: instance of the image plugin
         """
-        chat = self._chat_model_factory.get_llm_chat(ConfigPrefix.CHAT)
+        chat = self._chat_model_factory.get_llm_chat()
         image_llm = self._model_factory.get_multimodal_llm_model(ConfigPrefix.IMAGES)
         image_embed = ClipEmbedding()
         return ImagePlugin(image_llm, chat, image_embed, image_dir, persist_dir)
@@ -75,7 +75,7 @@ class PluginsFactory:
         Returns:
             TextPlugin: instance of the text plugin
         """
-        chat = self._chat_model_factory.get_llm_chat(ConfigPrefix.CHAT)
+        chat = self._chat_model_factory.get_llm_chat()
         text_llm = self._model_factory.get_llm_model(ConfigPrefix.TEXT)
         text_embed = self._model_factory.get_embed_model(ConfigPrefix.TEXT)
         return TextPlugin(text_llm, text_embed, chat, text_dir, persist_dir)
@@ -93,5 +93,5 @@ class PluginsFactory:
         Returns:
             NavPlugin: instance of the navigation plugin
         """
-        chat = self._chat_model_factory.get_llm_chat(ConfigPrefix.CHAT)
+        chat = self._chat_model_factory.get_llm_chat()
         return NavPlugin(navmesh_path, chat, vis_dir_path)
