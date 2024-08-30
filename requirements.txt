@@ -1,0 +1,8 @@
+llama-index==0.11.2
+semantic-kernel==0.9.6b1
+libigl==2.5.1
+pygeodesic==0.1.10
+plotly==5.24.0
+llama_index_embeddings_clip==0.2.0
+llama-index-multi-modal-llms-azure-openai===0.2.0
+llama-index-embeddings-azure-openai==0.2.5
