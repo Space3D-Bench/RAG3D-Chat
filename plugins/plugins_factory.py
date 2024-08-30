@@ -8,10 +8,7 @@ from plugins.sql_plugin import SqlPlugin
 from plugins.image_plugin import ImagePlugin
 from plugins.nav_plugin import NavPlugin
 from core.config_handler import ConfigPrefix
-from core.interfaces import (
-    AbstractModelFactory,
-    AbstractLlmChatFactory,
-)
+from core.interfaces import AbstractModelFactory, AbstractLlmChatFactory
 
 
 class PluginsFactory:
@@ -39,7 +36,7 @@ class PluginsFactory:
         Args:
             json_file_path (Optional[Path]): path to the JSON file with SQL data (detections and room information)
             persist_dir (Optional[Path]): path to the directory where the plugin's context stores/will store its data
-        
+
         Returns:
             SqlPlugin: instance of the SQL plugin
         """
@@ -56,9 +53,9 @@ class PluginsFactory:
         Args:
             image_dir (Optional[Path]): path to the directory with input images
             persist_dir (Optional[Path]): path to the directory where the plugin's context stores/will store its data
-        
+
         Returns:
-            ImagePlugin: instance of the image plugin 
+            ImagePlugin: instance of the image plugin
         """
         chat = self._chat_model_factory.get_llm_chat(ConfigPrefix.CHAT)
         image_llm = self._model_factory.get_multimodal_llm_model(ConfigPrefix.IMAGES)
@@ -92,7 +89,7 @@ class PluginsFactory:
         Args:
             navmesh_path (Path): path to the navmesh file
             vis_dir_path (Optional[Path]): path to the directory where the plugin will save visualizations of the results
-        
+
         Returns:
             NavPlugin: instance of the navigation plugin
         """
