@@ -4,8 +4,15 @@ import logging
 import logging.config
 from pathlib import Path
 
-from core.sk_planner import get_sk_planner
+from semantic_kernel.utils.settings import azure_openai_settings_from_dot_env
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
+
+from core.rag3dchat import RAG3DChat
+from core.config_handler import ConfigHandler
+from core.example_implementations import ExampleChatModelFactory, ExampleModelFactory
 from misc.scenes_enum import Scene
+from plugins.plugins_factory import PluginsFactory
 
 
 logging.config.fileConfig("conf/logging_conf.ini")
@@ -14,12 +21,30 @@ logger_main = logging.getLogger("main")
 
 
 async def main():
+    ### adjust this part so that it corresponds to your implementations
+    plugins_dotenv = Path(".env_plugins")
+    config_handler = ConfigHandler(plugins_dotenv)
+    chat_model_factory = ExampleChatModelFactory(config_handler)
+    model_factory = ExampleModelFactory(config_handler)
+    
+    deployment, _, endpoint = azure_openai_settings_from_dot_env()
+    kernel_service = AzureChatCompletion(
+        service_id="default",
+        deployment_name=deployment,
+        endpoint=endpoint,
+        ad_token_provider=get_bearer_token_provider(
+            DefaultAzureCredential(),
+            "https://cognitiveservices.azure.com/.default",
+        ),
+    )
+    ###
+    plugins_factory = PluginsFactory(model_factory, chat_model_factory)
+    
     for scene_choice in Scene:
         try:
             path_to_data = Path(f"data/{scene_choice.value}")
             questions_path = path_to_data / "questions.json"
             answers_path = path_to_data / "answers.json"
-            plugins_dotenv = Path(".env_plugins")
             
             separator_scene = f"===================== Testing {scene_choice.value} ====================="
             logger_plugins.info(separator_scene)
@@ -27,7 +52,10 @@ async def main():
             
             with questions_path.open("r") as file:
                 questions = json.load(file)
-            planner, kernel = get_sk_planner(path_to_data, plugins_dotenv, scene_choice)
+
+            rag3dchat = RAG3DChat(plugins_factory, path_to_data)
+            rag3dchat.set_scene(scene_choice)
+            rag3dchat.set_sk(kernel_service)
 
             answers = {}
             if answers_path.exists():
@@ -46,14 +74,14 @@ async def main():
                 logger_main.info(question)
 
                 try:
-                    result = await planner.invoke(kernel, q)
-                    logger_main.info(result.final_answer)
+                    final_answer, generated_plan = await rag3dchat.get_answer(q)
+                    logger_main.info(final_answer)
 
-                    logger_plugins.info(result.final_answer)
+                    logger_plugins.info(final_answer)
                     logger_plugins.info("---")
-                    logger_plugins.info(result.chat_history[0])
+                    logger_plugins.info(generated_plan)
 
-                    answers[nr] = result.final_answer
+                    answers[nr] = final_answer
                     with answers_path.open("w") as file:
                         json.dump(answers, file, indent=4)
 

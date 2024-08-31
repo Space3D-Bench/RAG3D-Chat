@@ -100,7 +100,7 @@ The user will ask you for help with each step.
 - <i><b>config_handler.py</b></i>: definitions of classes used for handling the LLM/embedding models configurations such as endpoints, deployments, api keys etc. The configurations are read from dotenv files, and the settings corresponding to different components of the system are distinguished by a prefix (further explained in dotenv descriptions);
 - <i><b>interfaces.py</b></i>: definitions of interfaces of chat- and LLM/embedding-model-related components;
 - <i><b>example_implementations.py</b></i>: examples of how interfaces from `interfaces.py` can be implemented for the case of using Azure OpenAI services with Azure Identity authentication. The user of the repo will need to adjust their implementations to the type of models and services they are using;
-- <i><b>sk_planner.py</b></i>: function creating the Semantic Kernel planner and kernel, with all the modules included. It also needs to be adjusted by the user, as it assumes a specific folder structure, the use of implementations of interfaces, and the specific use of Semantic Kernel (with Azure OpenAI);
+- <i><b>rag3dchat.py</b></i>: main class of the system, combines the planner from the Semantic Kernel with RAG modules;
 - <i><b>rag_document_loaders.py</b></i>: functions used for loading text and images into Llama Index's Documents;
 - <i><b>rag_sql_loader.py</b></i>: functions used for creating an SQL database from a JSON file (the file needs to follow the structure of Space3D-Bench's object detections file).
 
@@ -116,8 +116,7 @@ The user will ask you for help with each step.
 <b>repo's main folder</b>
 - <i><b>.env</b></i>: configurations of the Semantic Kernel's LLM model. Needs to be filled in by the user of the repo if services similar to OpenAI are used. Otherwise, the user can adjust the configuration handling depending on their own use case.
 - <i><b>.env_plugins</b></i>: configurations of the plugins-related LLM and embedding models. Needs to be filled in by the user of the repo if services similar to OpenAI are used. Otherwise, the user can adjust the configuration handling depending on their own use case.
-- <i><b>plugins_single_call.py</b></i>: example usage of the plugins by calling them individually. Needs to be adjusted by the user depending on the location of the data. The examples consider `apartment 2` from the Replica dataset.
-- <i><b>sk_rag.py</b></i>: the script iterates over all the scenes and runs the RAG3D-Chat for the questions available for each scene.
+- <i><b>rag3dchat_call.py</b></i>: the script iterating over all the scenes and running the RAG3D-Chat for the questions available for each scene.
 
 #### Assumptions on the data-containing folder structure
 
@@ -174,7 +173,7 @@ In the release, we provide a zipped folder with the data used in the first imple
 
 ### Preparation
 
-Assumptions: we assume you would like to first test the chat on the Replica dataset. For simplicity, we advise you to create a `data` folder in this repository and put the data there. If you do not use Replica, keep the structure of folders as described in `Content` section and adjust `misc/scenes_enum.py`. If the data is in a different folder than `{path_to_repo}/data`, adjust paths in `sk_rag.py`. We additionally assume that the contexts of RAG plugins will be saved to `.SQL_DIR`, `.TEXT_DIR` and `.IMG_DIR` - you can adjust it in `core/sk_planner.py` and `plugin_single_call.py`.
+Assumptions: we assume you would like to first test the chat on the Replica dataset. For simplicity, we advise you to create a `data` folder in this repository and put the data there. If you do not use Replica, keep the structure of folders as described in `Content` section and adjust `misc/scenes_enum.py`. If the data is in a different folder than `{path_to_repo}/data`, adjust paths in `rag3dchat_call.py`. We additionally assume that the contexts of RAG plugins will be saved to `.SQL_DIR`, `.TEXT_DIR` and `.IMG_DIR` - you can adjust it in `core/rag3dchat.py`.
 
 You may use the Replica example we provide in the zipped `data` in the release in the following way:
 ```bash
@@ -194,35 +193,25 @@ Then, in the folders of each scene you need to add a JSON file with questions. Y
 
 1. Implement classes whose interfaces are present in `core/interfaces.py`. You may use the examples in `core/example_implementations.py` as the guideline.
 
-2. Import and use your implementations in `core/sk_planner.py`, adjust the addition of the service to the SK's kernel. 
+2. Import and use your implementations in `rag3dchat_call.py`, define the Semantic Kernel's service.
 
-3. Import and use your implementations in `plugin_single_call.py`.
-
-4. Fill in both dotenv files in accordance to your configurations.
+3. Fill in both dotenv files in accordance to your configurations.
 
 #### Case 3: using another way of calling LLMs/embeddings (e.g. running them locally)
 
 1. Implement classes whose interfaces are present in `core/interfaces.py`. You may use the examples in `core/example_implementations.py` as the guideline. You may not need the handling of configurations as provided by `core/config_handler.py` and dotenv files, but make sure your models are configured.
 
-2. Import and use your implementations in `core/sk_planner.py`, adjust the addition of the service to the SK's kernel. 
-
-3. Import and use your implementations in `plugin_single_call.py`.
+2. Import and use your implementations in `rag3dchat_call.py`, define the Semantic Kernel's service.
 
 ## 🔍 Running the Tests
 
 
 ### Running
 
-Once the preparation steps descibed in `Getting Started` sections are done, simply run the `plugin_single_call.py` file from within your environment:
+Once the preparation steps descibed in `Getting Started` sections are done, simply run the `rag3dchat_call.py` file from within your environment:
 ```bash
 cd path/to/Space3D-Bench/repo
-python plugin_single_call.py
-```
-
-Address any errors encountered. Once they are resolved, you may proceed to running RAG3D-Chat pipeline:
-```bash
-cd path/to/Space3D-Bench/repo
-python sk_rag.py
+python rag3dchat_call.py
 ```
 
 The answers to the questions will be saved to files `data/{scene_name}/answers.json`.
