@@ -33,9 +33,12 @@ def get_sk_planner(
     Returns:
         Tuple[FunctionCallingStepwisePlanner, Kernel]: planner and kernel instances
     """
+
+    #### adjust this part so that it corresponds to your implementations
     config_handler = ConfigHandler(plugins_dotenv_path)
     chat_model_factory = ExampleChatModelFactory(config_handler)
     model_factory = ExampleModelFactory(config_handler)
+    ####
 
     plugins_factory = PluginsFactory(model_factory, chat_model_factory)
     nav_plugin = plugins_factory.get_nav_plugin(
@@ -55,9 +58,10 @@ def get_sk_planner(
     )
 
     kernel = Kernel()
-    deployment, _, endpoint = azure_openai_settings_from_dot_env()
     service_id = "default"
 
+    ### adjust it if you do not intend to use Azure OpenAI with Azure Identity
+    deployment, _, endpoint = azure_openai_settings_from_dot_env()
     kernel.add_service(
         AzureChatCompletion(
             service_id=service_id,
@@ -69,6 +73,7 @@ def get_sk_planner(
             ),
         ),
     )
+    ###
 
     kernel.add_plugin(text_plugin, plugin_name="text")
     kernel.add_plugin(nav_plugin, plugin_name="navigation")

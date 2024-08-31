@@ -3,12 +3,13 @@ from pathlib import Path
 import logging
 
 from core.config_handler import ConfigHandler
+from core.example_implementations import ExampleChatModelFactory, ExampleModelFactory
 from plugins.plugins_factory import PluginsFactory
 from misc.scenes_enum import Scene
 
 logging.config.fileConfig("conf/logging_conf.ini")
 logger_main = logging.getLogger("main")
-SCENE = Scene.APARTMENT_2  # Change this to test different scenes
+SCENE = Scene.APARTMENT_2  # change this to test different scenes
 
 
 def test_sql_plugin(plugins_factory: PluginsFactory):
@@ -65,9 +66,13 @@ def test_nav_plugin(plugins_factory: PluginsFactory):
 
 
 if __name__ == "__main__":
-    config_handler = ConfigHandler(Path(".env_plugins"))
-    plugins_factory = PluginsFactory(config_handler)
+    ### adjust this part so that it corresponds to your implementations
+    config_handler = ConfigHandler(Path("plugins_dotenv.env"))
+    chat_model_factory = ExampleChatModelFactory(config_handler)
+    model_factory = ExampleModelFactory(config_handler)
+    ###
 
+    plugins_factory = PluginsFactory(model_factory, chat_model_factory)
     test_text_plugin(plugins_factory)
     test_img_plugin(plugins_factory)
     test_sql_plugin(plugins_factory)

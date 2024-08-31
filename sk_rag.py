@@ -18,9 +18,9 @@ async def main():
         try:
             path_to_data = Path(f"data/{scene_choice.value}")
             questions_path = path_to_data / "questions.json"
+            answers_path = path_to_data / "answers.json"
             plugins_dotenv = Path(".env_plugins")
-            answers_path = Path(f"results/{scene_choice.value}/answers.json")
-
+            
             separator_scene = f"===================== Testing {scene_choice.value} ====================="
             logger_plugins.info(separator_scene)
             logger_main.info(separator_scene)
