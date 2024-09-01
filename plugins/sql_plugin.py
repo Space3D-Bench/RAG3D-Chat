@@ -85,9 +85,8 @@ class SqlPlugin:
         self._top_k: int = top_k
         self._parser: BaseSQLParser = DefaultSQLParser()
 
-        service_context = ServiceContext.from_defaults(llm=llm, embed_model=self._embed_model)
         self._query_engine = NLSQLTableQueryEngine(
-            sql_database=self._sql_db, service_context=service_context
+            sql_database=self._sql_db, llm=llm, embed_model=self._embed_model
         )
         self._qp = self._get_query_pipeline()
 

@@ -45,6 +45,10 @@ async def main():
             path_to_data = Path(f"data/{scene_choice.value}")
             questions_path = path_to_data / "questions.json"
             answers_path = path_to_data / "answers.json"
+
+            if questions_path.exists() is False:
+                logger_main.info(f"No questions found for {scene_choice.value}")
+                continue
             
             separator_scene = f"===================== Testing {scene_choice.value} ====================="
             logger_plugins.info(separator_scene)

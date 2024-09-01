@@ -6,3 +6,5 @@ plotly==5.24.0
 llama_index_embeddings_clip==0.2.0
 llama-index-multi-modal-llms-azure-openai===0.2.0
 llama-index-embeddings-azure-openai==0.2.5
+torch==2.2.2
+git+https://github.com/openai/CLIP.git

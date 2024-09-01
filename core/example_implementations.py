@@ -47,6 +47,7 @@ class ExampleChatModelFactory(AbstractLlmChatFactory):
         )
         client = AzureOpenAI(
             azure_endpoint=self.cnf.endpoint,
+            azure_deployment=self.cnf.llm_deployment,
             azure_ad_token_provider=token_provider,
             api_version=self.cnf.api_version,
         )
