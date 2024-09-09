@@ -15,7 +15,7 @@ SQL_DIST_DISCARD_PROMPT = "Discard the object which is within 0.05 meters with r
 # Navigation module
 NAV_FUN_ACTUAL_PROMPT = "Calculates the distance between two points, considering obstacles and non-navigable areas, when provided with the 3D positions of those points. It does not independently determine the positions of objects or points in space, the positions need to be included in the input query. It is the default distance measurement when the query implies walking or getting from one place to another, since it considers walls separating the rooms."
 NAV_OUT_ACTUAL_PROMPT = "Information on the actual distance between the points (considering the obstacles and non-navigable areas). If the input was in correct format, it can still happen that the path between objects is not navigable."
-NAV_IN_PROMPT = "Natural language query specifying the positions of the start and end, inluding X, Y and Z components."
+NAV_IN_PROMPT = "Natural language query specifying the positions of the start and end, including X, Y and Z components."
 NAV_FUN_LINE_PROMPT = "Having the description of the 3D positions of start and goal, returns the distance between them in straight line, NOT considering any obstacles. It does not independently determine the positions of objects or points in space, the positions need to be included in the input query."
 NAV_OUT_LINE_PROMPT = "Information on the straight-line distance between the points (NOT considering the obstacles)."
 
