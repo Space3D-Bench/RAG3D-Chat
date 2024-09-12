@@ -43,7 +43,7 @@
 
 ### Released repository content
 
-In this section, we will in detail describe the code-relevant content of this repository. It was assumed that API-call-based LLM/embedding models will be used, however, it is adjustable as examplained in `Getting Started` section.
+In this section, we will in detail describe the code-relevant content of this repository. It was assumed that API-call-based LLM/embedding models are used, however, it is adjustable as examplained in `Getting Started` section.
 
 <b>conf:</b>
 - <i><b>logging_conf.ini</b></i>: configuration of the logging, divided into two parts - a detailed one with all the planner's decisions and steps evoked by each module, saved to <i>detailed.log</i>, and a high-level one, where only the questions and the resulting answers are logged both to the console and <i>brief.log</i>.
@@ -139,7 +139,7 @@ The folder with data should be divided into subfolders, whose names (correspondi
     ├── room2.txt
     ...
 ├── questions.json
-├── answers.json (if already existing)
+├── answers.json (if already generated)
 ```
 Some notes:
 - **img_data**: although the image names do not matter, it is crucial that the folders in which they are put correspond to the room being named as the folder;
