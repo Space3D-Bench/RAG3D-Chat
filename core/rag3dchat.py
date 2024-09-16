@@ -17,7 +17,7 @@ from plugins.image_plugin import ImagePlugin
 
 
 class RAG3DChat:
-    def __init__(self, plugins_factory: PluginsFactory, path_to_data: Path) -> None:
+    def __init__(self, plugins_factory: PluginsFactory, path_to_data: Path, kernel_service: AIServiceClientBase) -> None:
         """
         Constructor
 
@@ -27,6 +27,7 @@ class RAG3DChat:
         """
         self._plugins_factory = plugins_factory
         self._path_to_data = path_to_data
+        self._kernel_service = kernel_service
 
         self._nav_plugin: Optional[NavPlugin] = None
         self._text_plugin: Optional[TextPlugin] = None
@@ -65,24 +66,8 @@ class RAG3DChat:
             image_dir=self._path_to_data / Path(f"{scene_choice.value}/img_data"),
         )
 
-    def set_sk(self, service: AIServiceClientBase) -> None:
-        """
-        If the scene was previously set, then this method sets up the semantic kernel with all
-        the plugins and the corresponding service.
-
-        Args:
-            service (AIServiceClientBase): Semantic Kernel service to be set up
-        """
-        if (
-            self._image_plugin is None
-            or self._nav_plugin is None
-            or self._sql_plugin is None
-            or self._text_plugin is None
-        ):
-            raise ValueError("You need to set the scene first")
-
         self._kernel = Kernel()
-        self._kernel.add_service(service)
+        self._kernel.add_service(self.service)
 
         self._kernel.add_plugin(self._text_plugin, plugin_name="text")
         self._kernel.add_plugin(self._nav_plugin, plugin_name="navigation")
@@ -95,7 +80,7 @@ class RAG3DChat:
             max_tokens=10000,
         )
         self._planner = FunctionCallingStepwisePlanner(
-            service_id=service.service_id,
+            service_id=self.service.service_id,
             options=options,
         )
 

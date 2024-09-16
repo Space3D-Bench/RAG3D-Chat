@@ -57,9 +57,8 @@ async def main():
             with questions_path.open("r") as file:
                 questions = json.load(file)
 
-            rag3dchat = RAG3DChat(plugins_factory, path_to_data)
+            rag3dchat = RAG3DChat(plugins_factory, path_to_data, kernel_service)
             rag3dchat.set_scene(scene_choice)
-            rag3dchat.set_sk(kernel_service)
 
             answers = {}
             if answers_path.exists():
