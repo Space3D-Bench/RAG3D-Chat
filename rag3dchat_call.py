@@ -42,7 +42,7 @@ async def main():
     
     for scene_choice in Scene:
         try:
-            path_to_data = Path(f"data/{scene_choice.value}")
+            path_to_data = Path(f"data")
             questions_path = path_to_data / "questions.json"
             answers_path = path_to_data / "answers.json"
 
