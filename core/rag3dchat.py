@@ -67,7 +67,7 @@ class RAG3DChat:
         )
 
         self._kernel = Kernel()
-        self._kernel.add_service(self.service)
+        self._kernel.add_service(self._kernel_service)
 
         self._kernel.add_plugin(self._text_plugin, plugin_name="text")
         self._kernel.add_plugin(self._nav_plugin, plugin_name="navigation")
@@ -80,7 +80,7 @@ class RAG3DChat:
             max_tokens=10000,
         )
         self._planner = FunctionCallingStepwisePlanner(
-            service_id=self.service.service_id,
+            service_id=self._kernel_service.service_id,
             options=options,
         )
 
