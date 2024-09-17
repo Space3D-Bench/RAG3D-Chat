@@ -1,4 +1,4 @@
-from openai import AzureOpenAI
+import openai
 from llama_index.core.base.llms.base import BaseLLM
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.multi_modal_llms import MultiModalLLM
@@ -15,11 +15,11 @@ class ExampleLlmChat(AbstractLlmChat):
     """Example implementation of an LLM chat with Azure OpenAI API"""
     def __init__(
         self,
-        client: AzureOpenAI,
+        client: openai.AzureOpenAI,
         deployment: str,
         max_tokens: int = 4000,
     ) -> None:
-        self._client: AzureOpenAI = client
+        self._client: openai.AzureOpenAI = client
         self._deployment_llm: str = deployment
         self._max_tokens: int = max_tokens
 
@@ -45,7 +45,7 @@ class ExampleChatModelFactory(AbstractLlmChatFactory):
         token_provider = get_bearer_token_provider(
             DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
         )
-        client = AzureOpenAI(
+        client = openai.AzureOpenAI(
             azure_endpoint=self.cnf.endpoint,
             azure_deployment=self.cnf.llm_deployment,
             azure_ad_token_provider=token_provider,
