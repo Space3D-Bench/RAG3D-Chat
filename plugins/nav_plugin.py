@@ -178,7 +178,7 @@ class NavPlugin:
 
         closest_s, closest_v_s, closest_vid_s = self._snap_to_closest_vertex(start)
         closest_g, closest_v_g, closest_vid_g = self._snap_to_closest_vertex(goal)
-        geoalg = geodesic.PyGeodesicAlgorithmExact(self.vertices, self.faces)
+        geoalg = geodesic.PyGeodesicAlgorithmExact(self._vertices, self._faces)
         dist, path = geoalg.geodesicDistance(closest_vid_s, closest_vid_g)
 
         if path is not None and path.size != 0:
