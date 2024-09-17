@@ -98,4 +98,4 @@ class RAG3DChat:
             raise ValueError("You need to set the SK first")
 
         result = await self._planner.invoke(self._kernel, question)
-        return result.final_answer, result.chat_history[0]
+        return result.final_answer, result.chat_history[0].content
