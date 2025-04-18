@@ -2,7 +2,7 @@
 <p align="center">
 <h1 align="center"><strong>RAG3D-Chat as a baseline for Space3D-Bench</strong></h1>
   <p align="center">
-    <a href="https://emilia-szymanska.gitlab.io/cv/" target="_blank">Emilia Szymanska</a>&emsp;
+    <a href="https://emilia-szymanska.com" target="_blank">Emilia Szymanska</a>&emsp;
     <a href="https://dusmanu.com/" target="_blank">Mihai Dusmanu</a>&emsp;
     <a href="https://jwbuurlage.github.io/" target="_blank">Jan-Willem Buurlage</a>&emsp;
     <a href="https://radmahdi.github.io/" target="_blank">Mahdi Rad</a>&emsp;
